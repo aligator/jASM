@@ -20,31 +20,6 @@ public class Registers {
     private byte g;
     private byte h;
     
-    public void printWord(int w) {
-        System.out.print(Integer.toBinaryString(w & 0xFFFF));
-
-    }
-    
-    public void printDWord(int w) {
-        System.out.print(Integer.toBinaryString(w));
-
-    }
-    
-    public int toWord(byte a, byte b) {
-        int w1 = a;
-        w1 = w1 << 8;
-        w1 = w1 | (b & 0xFF);
-        w1 = w1 & 0xFFFF;
-        return w1;
-    }
-    
-    public int toDword(int a, int b) {
-        int w1 = a;
-        w1 = w1 << 16;
-        w1 = w1 | (b & 0xFFFF);
-        return w1;
-    }
-    
     public byte a() {
         return a;
     }
@@ -54,7 +29,7 @@ public class Registers {
     }
     
     public int w1() {
-        return toWord(a, b);
+        return BitHelper.toWord(a, b);
     }
     
     public void w1(int w1) {
@@ -67,7 +42,7 @@ public class Registers {
     }
     
     public int w2() {
-        return toWord(c, d);
+        return BitHelper.toWord(c, d);
     }
     
     public void w2(int w2) {
@@ -80,7 +55,7 @@ public class Registers {
     }
     
     public int w3() {
-        return toWord(e, f);
+        return BitHelper.toWord(e, f);
     }
     
     public void w3(int w3) {
@@ -93,7 +68,7 @@ public class Registers {
     }
     
     public int w4() {
-        return toWord(g, h);
+        return BitHelper.toWord(g, h);
     }
     
     public void w4(int w4) {
@@ -106,7 +81,7 @@ public class Registers {
     }
     
     public int ax() {
-        return toDword(w1(), w2());
+        return BitHelper.toDword(w1(), w2());
     }
     
     public void ax(int ax) {
@@ -115,7 +90,7 @@ public class Registers {
     }
     
     public int bx() {
-        return toDword(w3(), w4());
+        return BitHelper.toDword(w3(), w4());
     }
     
     public void bx(int bx) {

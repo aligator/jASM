@@ -20,12 +20,11 @@ public class BitHelper {
 
     }
     
-    public static int toWord(byte a, byte b) {
-        int w1 = a;
-        w1 = w1 << 8;
-        w1 = w1 | (b & 0xFF);
-        w1 = w1 & 0xFFFF;
-        return w1;
+    public static short toWord(byte a, byte b) {
+        short w1 = a;
+        w1 = (short) (w1 << 8);
+        w1 = (short) (w1 | (b & 0xFF));
+        return (short)w1;
     }
     
     public static int toDword(int a, int b) {

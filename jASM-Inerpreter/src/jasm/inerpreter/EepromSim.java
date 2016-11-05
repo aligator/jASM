@@ -24,27 +24,7 @@ public class EepromSim {
     public EepromSim() {
         this.eeprom = new byte[32767];
     }
-    
-    byte getCommand(int cmdNr) {
-        int eeaddress = cmdNr * 3;
-        byte cmd  = readEEPROM(eeaddress);
         
-        cmd = (byte) (cmd >> 2);
-        
-        return cmd;
-    }
-    
-    byte getInfo(int cmdNr) {
-        int eeaddress = cmdNr * 3;
-        byte info  = readEEPROM(eeaddress);
-        
-        info = (byte) (info & 0x0003);
-        info = (byte) (info << 1);
-        
-        info = (byte) (info | ((readEEPROM(eeaddress + 1) & 0x8000) >> 3));
-        return info;
-    }
-    
     byte readEEPROM(int eeaddress) {
         return  eeprom[eeaddress];
     }

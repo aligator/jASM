@@ -63,6 +63,7 @@ public class JASMInterpreter {
                         break;
                     case 2:
                         if (!needNext) {
+                            prevCmd = cmd;
                             needNext = true;
                         } else {
                             reg.rx((int) (prevCmd.getData() + reg.getRegister(cmd.getData())));
@@ -71,6 +72,7 @@ public class JASMInterpreter {
                         break;
                     case 3:
                         if (!needNext) {
+                            prevCmd = cmd;
                             needNext = true;
                         } else {
                             reg.rx((int) (prevCmd.getData() + cmd.getData()));
@@ -79,6 +81,7 @@ public class JASMInterpreter {
                         break;
                     case 4:
                         if (!needNext) {
+                            prevCmd = cmd;
                             needNext = true;
                         } else {
                             reg.rx((int) (reg.getRegister(prevCmd.getData()) + cmd.getData()));

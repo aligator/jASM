@@ -5,6 +5,7 @@
  */
 package jasmcompiler;
 
+import jasmcompiler.Command.Mnemonic;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -16,52 +17,34 @@ import java.util.ArrayList;
  * @author johannes
  */
 public class Code {
-    private enum Mnemonic {
-        Ende(2, "Ende"), Ipp(2, "I++"), Print(8, "Print");
-
-        private int id; 
-        private String cmd;
-        
-        private Mnemonic(int id, String cmd) {
-            this.id = id;
-            this.cmd = cmd;
-        }
-        
-        public int getId() {
-            return id;
-        }
-
-        public String getCmd() {
-            return cmd;
-        }
-    }
     
     private enum Register {
         a(0, "a"),
-        b(0, "b"),
-        c(0, "c"),
-        d(0, "d"),
-        e(0, "e"),
-        f(0, "f"),
-        g(0, "g"),
-        h(0, "h"),
-        w1(0, "w1"),
-        w2(0, "w2"),
-        w3(0, "w3"),
-        w4(0, "w4"),
-        ax(0, "ax"),
-        bx(0, "bx"),
-        rx(0, "rx");
-
-        private int id; 
+        b(1, "b"),
+        c(2, "c"),
+        d(3, "d"),
+        e(4, "e"),
+        f(5, "f"),
+        g(6, "g"),
+        h(7, "h"),
+        w1(8, "w1"),
+        w2(9, "w2"),
+        w3(10, "w3"),
+        w4(11, "w4"),
+        ax(12, "ax"),
+        bx(13, "bx"),
+        rx(14, "rx"),
+        nothing(-1, "nothing");
+        
+        private byte id; 
         private String cmd;
         
         private Register(int id, String cmd) {
-            this.id = id;
+            this.id = (byte)id;
             this.cmd = cmd;
         }
         
-        public int getId() {
+        public byte getId() {
             return id;
         }
 
@@ -97,9 +80,17 @@ public class Code {
                 switch (mnemonic) {
                     case Ipp:
                         String[] splitted = line.split(" ");
-                        if (isReg(splitted[1]) && isConst(splitted[2])) {
+                        Register reg1 = extractReg(splitted[1]);
+                        Register reg2 = extractReg(splitted[2]);
+                        
+                        Command cmd;
+                        
+                        if (reg1 != Register.nothing && isConst(splitted[2])) {
                             // Register + Konstante
-                            
+                            cmd = new Command(mnemonic, (byte)0, reg1.getId(), (byte)extractConst(splitted[2]), true);
+                        } else if (reg1 != Register.nothing && reg2 != Register.nothing) {
+                            // Register + Register
+                            cmd = new Command(mnemonic, (byte)0, reg1.getId(), reg2.getId(), true);
                         }
                         
                         break;
@@ -122,13 +113,20 @@ public class Code {
         return in.startsWith("#");
     }
     
-    private boolean isReg(String in) {
+    private int extractConst(String in) {
+        in = in.substring(1);
+        return Integer.parseInt(in);
+    }
+    
+    private Register extractReg(String in) {
         for (Register reg : Register.values()) {
             if (in.startsWith(reg.getCmd())) {
-                return true;
+                return reg;
             }
         }
         
-        return false;
+        return Register.nothing;
     }
+    
+    
 }

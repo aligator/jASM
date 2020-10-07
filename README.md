@@ -5,3 +5,5 @@ The compiler is unfinished as I remember. But the Bytecode interpreter should wo
 [Instead I created a compiler in Haskell.](https://github.com/aligator/jASMc) which is finished.
 
 The Problem is that I have no exact documentation anymore about how the bytecode looks like...
+
+related: https://github.com/aligator/jAsmInt
